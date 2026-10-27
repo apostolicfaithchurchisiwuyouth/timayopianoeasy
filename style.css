@@ -1,0 +1,1336 @@
+:root {
+  --app-bg: #0b0d11;
+  --panel: #14171d;
+  --panel-2: #1b1f27;
+  --panel-border: #292e38;
+
+  --text: #ffffff;
+  --muted: #949ba7;
+
+  --accent: #8b7cff;
+
+  /* VERY CLEAR PLAY COLORS */
+  --right-color: #8b5cf6;
+  --right-glow: rgba(139, 92, 246, 0.75);
+
+  --left-color: #10d49a;
+  --left-glow: rgba(16, 212, 154, 0.7);
+
+  --both-color: #ffd43b;
+  --both-glow: rgba(255, 212, 59, 0.8);
+}
+
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+
+  background: var(--app-bg);
+
+  font-family: "DM Sans", sans-serif;
+
+  overflow: hidden;
+}
+
+
+body {
+  color: var(--text);
+}
+
+
+/* =========================================
+   MAIN APP
+========================================= */
+
+.piano-app {
+  position: fixed;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100dvh;
+
+  background:
+    radial-gradient(
+      circle at 50% -30%,
+      rgba(109, 93, 252, 0.13),
+      transparent 45%
+    ),
+    #0b0d11;
+
+  display: grid;
+
+  grid-template-rows:
+    auto
+    auto
+    1fr
+    auto;
+
+  overflow: hidden;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.app-header {
+  min-height: 52px;
+
+  padding: 7px 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+
+  background: rgba(11, 13, 17, 0.96);
+}
+
+
+.app-title-area {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  min-width: 0;
+}
+
+
+.app-name {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  font-family: "Bricolage Grotesque", sans-serif;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+
+.app-logo {
+  width: 28px;
+  height: 28px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 8px;
+
+  background: #242833;
+
+  color: #b5adff;
+
+  font-size: 14px;
+}
+
+
+.piece-title {
+  color: #cfd3db;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.range-display {
+  flex-shrink: 0;
+
+  color: #a8afbb;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  padding: 6px 10px;
+
+  border: 1px solid #2a2f39;
+
+  background: #15181e;
+
+  border-radius: 8px;
+}
+
+
+/* =========================================
+   CONTROLS
+========================================= */
+
+.control-row {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.5fr)
+    minmax(0, 1fr)
+    minmax(0, 1fr);
+
+  gap: 8px;
+
+  padding: 8px 14px;
+
+  background: #0d1015;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+
+.control-card {
+  position: relative;
+
+  min-width: 0;
+
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 0 28px 0 10px;
+
+  border-radius: 10px;
+
+  border: 1px solid #292e38;
+
+  background: #171a20;
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  transition:
+    background 120ms ease,
+    border-color 120ms ease,
+    transform 100ms ease;
+}
+
+
+.control-card:hover {
+  background: #1d2129;
+  border-color: #383e4b;
+}
+
+
+.control-card:active {
+  transform: scale(0.985);
+}
+
+
+.control-icon {
+  width: 27px;
+  height: 27px;
+
+  flex-shrink: 0;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 7px;
+
+  background: #272b35;
+
+  color: #a9a1ff;
+
+  font-size: 14px;
+}
+
+
+.control-info {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+
+  gap: 3px;
+}
+
+
+.control-info small {
+  color: #7f8794;
+
+  font-size: 8px;
+  font-weight: 700;
+
+  letter-spacing: 0.1em;
+
+  line-height: 1;
+}
+
+
+.control-info strong {
+  color: #f1f3f6;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  line-height: 1.1;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+
+.control-arrow {
+  position: absolute;
+
+  right: 8px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  color: #777f8c;
+
+  font-size: 16px;
+
+  pointer-events: none;
+}
+
+
+/*
+  The invisible select covers the WHOLE control.
+  So clicking the icon, text, arrow or background
+  opens the dropdown.
+*/
+
+.control-card select {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  opacity: 0;
+
+  cursor: pointer;
+
+  z-index: 10;
+}
+
+
+/* =========================================
+   PIANO AREA
+========================================= */
+
+.piano-area {
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 7px 10px 5px;
+}
+
+
+.piano-top-line {
+  height: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 4px 4px;
+
+  color: #8f97a4;
+
+  font-size: 10px;
+  font-weight: 600;
+}
+
+
+#pianoMode {
+  color: #b8b0ff;
+}
+
+
+.piano-stage {
+  position: relative;
+
+  flex: 1;
+
+  min-height: 0;
+
+  width: 100%;
+
+  background:
+    linear-gradient(
+      180deg,
+      #181b21,
+      #0b0d11
+    );
+
+  border:
+    1px solid #292e37;
+
+  border-radius: 12px;
+
+  padding: 7px 6px 8px;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.04),
+    0 10px 30px rgba(0,0,0,0.2);
+
+  overflow: hidden;
+}
+
+
+.piano {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+
+  user-select: none;
+  touch-action: none;
+}
+
+
+/* =========================================
+   WHITE KEYS
+========================================= */
+
+.white-key {
+  position: relative;
+
+  flex: 1;
+
+  height: 100%;
+
+  min-width: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #fafafa 58%,
+      #dedfe2 100%
+    );
+
+  border-left: 1px solid #bfc2c7;
+  border-bottom: 5px solid #b5b8bd;
+
+  border-radius: 0 0 7px 7px;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+
+  padding-bottom: 9px;
+
+  transition:
+    background 70ms ease,
+    box-shadow 70ms ease,
+    transform 70ms ease;
+
+  z-index: 1;
+}
+
+
+.white-key:first-child {
+  border-radius: 6px 0 7px 7px;
+}
+
+
+.white-key:last-child {
+  border-radius: 0 6px 7px 7px;
+}
+
+
+.white-key:active {
+  transform: translateY(2px);
+}
+
+
+.white-key::after {
+  content: attr(data-note);
+
+  color: #666b73;
+
+  font-size: clamp(9px, 1.2vw, 13px);
+
+  font-weight: 700;
+
+  line-height: 1;
+
+  pointer-events: none;
+}
+
+
+/*
+  C keys are especially visible.
+*/
+
+.white-key.is-c::after {
+  color: #272a31;
+
+  font-size: clamp(10px, 1.35vw, 15px);
+
+  font-weight: 800;
+}
+
+
+/* RIGHT HAND */
+
+.white-key.active.right-hand {
+  background:
+    linear-gradient(
+      180deg,
+      #c8b7ff 0%,
+      #9b7cff 52%,
+      #6d42e8 100%
+    );
+
+  border-color: #b39cff;
+
+  box-shadow:
+    inset 0 -8px 0 rgba(72, 31, 177, 0.3),
+    0 0 18px var(--right-glow);
+
+  z-index: 3;
+}
+
+
+.white-key.active.right-hand::after {
+  color: #1d1238;
+}
+
+
+/* LEFT HAND */
+
+.white-key.active.left-hand {
+  background:
+    linear-gradient(
+      180deg,
+      #a5ffe3 0%,
+      #39e3ae 52%,
+      #08a878 100%
+    );
+
+  border-color: #72f2ca;
+
+  box-shadow:
+    inset 0 -8px 0 rgba(0, 103, 74, 0.25),
+    0 0 18px var(--left-glow);
+
+  z-index: 3;
+}
+
+
+.white-key.active.left-hand::after {
+  color: #063c2d;
+}
+
+
+/* BOTH HANDS */
+
+.white-key.active.both-hands {
+  background:
+    linear-gradient(
+      180deg,
+      #fff5a8 0%,
+      #ffd83d 52%,
+      #e8a900 100%
+    );
+
+  border-color: #ffe678;
+
+  box-shadow:
+    inset 0 -8px 0 rgba(128, 79, 0, 0.25),
+    0 0 22px var(--both-glow);
+
+  z-index: 4;
+}
+
+
+.white-key.active.both-hands::after {
+  color: #493400;
+}
+
+
+/* =========================================
+   BLACK KEYS
+========================================= */
+
+.black-key {
+  position: absolute;
+
+  top: 0;
+
+  width: 3.1%;
+  height: 61%;
+
+  transform: translateX(-50%);
+
+  z-index: 10;
+
+  background:
+    linear-gradient(
+      90deg,
+      #050608,
+      #2c3037 45%,
+      #090a0c
+    );
+
+  border:
+    1px solid #030405;
+
+  border-radius: 0 0 5px 5px;
+
+  box-shadow:
+    0 5px 8px rgba(0,0,0,0.55);
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+
+  padding-bottom: 7px;
+}
+
+
+.black-key::after {
+  content: attr(data-note);
+
+  color: #b9bec7;
+
+  font-size: clamp(7px, 0.85vw, 10px);
+
+  font-weight: 700;
+
+  line-height: 1;
+
+  pointer-events: none;
+}
+
+
+.black-key:active {
+  transform:
+    translateX(-50%)
+    translateY(2px);
+}
+
+
+/* RIGHT */
+
+.black-key.active.right-hand {
+  background:
+    linear-gradient(
+      180deg,
+      #a98cff,
+      #6739d4
+    );
+
+  border-color: #bda9ff;
+
+  box-shadow:
+    0 3px 8px rgba(0,0,0,0.5),
+    0 0 18px var(--right-glow);
+
+  z-index: 20;
+}
+
+
+.black-key.active.right-hand::after {
+  color: white;
+}
+
+
+/* LEFT */
+
+.black-key.active.left-hand {
+  background:
+    linear-gradient(
+      180deg,
+      #6ff4c8,
+      #079a70
+    );
+
+  border-color: #8effd9;
+
+  box-shadow:
+    0 3px 8px rgba(0,0,0,0.5),
+    0 0 18px var(--left-glow);
+
+  z-index: 20;
+}
+
+
+.black-key.active.left-hand::after {
+  color: white;
+}
+
+
+/* BOTH */
+
+.black-key.active.both-hands {
+  background:
+    linear-gradient(
+      180deg,
+      #fff28b,
+      #e4a600
+    );
+
+  border-color: #ffe878;
+
+  box-shadow:
+    0 3px 8px rgba(0,0,0,0.5),
+    0 0 22px var(--both-glow);
+
+  z-index: 21;
+}
+
+
+.black-key.active.both-hands::after {
+  color: #332400;
+}
+
+
+/* =========================================
+   PLAYBACK
+========================================= */
+
+.playback-bar {
+  min-height: 53px;
+
+  padding: 6px 14px;
+
+  display: grid;
+
+  grid-template-columns: 1fr auto 1fr;
+
+  align-items: center;
+
+  border-top: 1px solid rgba(255,255,255,0.07);
+
+  background: #0d1015;
+}
+
+
+.replay-button {
+  justify-self: start;
+
+  height: 37px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 0 12px;
+
+  border-radius: 9px;
+
+  color: #e5e7eb;
+
+  background: #1b1f26;
+
+  border: 1px solid #2a2f38;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+
+.replay-button:active {
+  transform: scale(0.96);
+}
+
+
+.replay-button i {
+  font-size: 15px;
+}
+
+
+.playback-center {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+}
+
+
+.play-button {
+  width: 39px;
+  height: 39px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background: #ffffff;
+
+  color: #111318;
+
+  font-size: 19px;
+
+  box-shadow:
+    0 5px 15px rgba(0,0,0,0.3);
+
+  cursor: pointer;
+}
+
+
+.play-button:active {
+  transform: scale(0.92);
+}
+
+
+.playback-label {
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+
+.playback-label strong {
+  font-size: 11px;
+  font-weight: 700;
+
+  color: #f2f3f5;
+}
+
+
+.playback-label span {
+  font-size: 9px;
+
+  color: #777f8b;
+}
+
+
+.playback-right {
+  justify-self: end;
+}
+
+
+.sample-status {
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+
+  color: #737b88;
+
+  font-size: 9px;
+}
+
+
+.sample-status i {
+  color: #6ee7b7;
+  font-size: 13px;
+}
+
+
+/* =========================================
+   PORTRAIT
+========================================= */
+
+.portrait-screen {
+  display: none;
+}
+
+
+/* =========================================
+   DESKTOP
+========================================= */
+
+@media (min-width: 900px) {
+
+  .piano-app {
+    grid-template-rows:
+      62px
+      64px
+      1fr
+      62px;
+  }
+
+
+  .app-header {
+    padding: 8px 24px;
+  }
+
+
+  .control-row {
+    padding: 9px 24px;
+  }
+
+
+  .control-card {
+    height: 46px;
+  }
+
+
+  .piano-area {
+    padding: 9px 18px 7px;
+  }
+
+
+  .piano-stage {
+    border-radius: 15px;
+  }
+
+
+  .white-key::after {
+    font-size: 12px;
+  }
+
+
+  .black-key::after {
+    font-size: 9px;
+  }
+
+}
+
+
+/* =========================================
+   MOBILE LANDSCAPE
+========================================= */
+
+@media (orientation: landscape) and (max-height: 600px) {
+
+  .piano-app {
+    grid-template-rows:
+      46px
+      53px
+      1fr
+      48px;
+  }
+
+
+  .app-header {
+    min-height: 46px;
+
+    padding: 5px 12px;
+  }
+
+
+  .app-name {
+    font-size: 14px;
+  }
+
+
+  .app-logo {
+    width: 25px;
+    height: 25px;
+
+    font-size: 13px;
+  }
+
+
+  .piece-title {
+    font-size: 12px;
+  }
+
+
+  .range-display {
+    font-size: 10px;
+
+    padding: 5px 8px;
+  }
+
+
+  .control-row {
+    padding: 6px 10px;
+
+    gap: 6px;
+  }
+
+
+  .control-card {
+    height: 41px;
+
+    gap: 7px;
+
+    padding-left: 8px;
+    padding-right: 25px;
+  }
+
+
+  .control-icon {
+    width: 24px;
+    height: 24px;
+
+    font-size: 12px;
+  }
+
+
+  .control-info {
+    gap: 2px;
+  }
+
+
+  .control-info small {
+    font-size: 7px;
+  }
+
+
+  .control-info strong {
+    font-size: 11px;
+  }
+
+
+  .control-arrow {
+    font-size: 14px;
+  }
+
+
+  .piano-area {
+    padding:
+      4px
+      9px
+      4px;
+  }
+
+
+  .piano-top-line {
+    height: 18px;
+
+    font-size: 9px;
+  }
+
+
+  .piano-stage {
+    padding: 5px 5px 6px;
+
+    border-radius: 9px;
+  }
+
+
+  .white-key {
+    padding-bottom: 8px;
+  }
+
+
+  .white-key::after {
+    font-size: 10px;
+  }
+
+
+  .white-key.is-c::after {
+    font-size: 12px;
+  }
+
+
+  .black-key::after {
+    font-size: 7px;
+  }
+
+
+  .playback-bar {
+    min-height: 48px;
+
+    padding: 5px 10px;
+  }
+
+
+  .replay-button {
+    height: 33px;
+
+    padding: 0 9px;
+
+    font-size: 9px;
+  }
+
+
+  .replay-button i {
+    font-size: 13px;
+  }
+
+
+  .play-button {
+    width: 35px;
+    height: 35px;
+
+    font-size: 16px;
+  }
+
+
+  .playback-label strong {
+    font-size: 9px;
+  }
+
+
+  .playback-label span {
+    font-size: 7px;
+  }
+
+
+  .sample-status {
+    font-size: 8px;
+  }
+
+}
+
+
+/* =========================================
+   VERY SHORT LANDSCAPE
+========================================= */
+
+@media (orientation: landscape) and (max-height: 430px) {
+
+  .piano-app {
+    grid-template-rows:
+      40px
+      46px
+      1fr
+      43px;
+  }
+
+
+  .app-header {
+    padding: 4px 10px;
+  }
+
+
+  .app-name {
+    font-size: 12px;
+  }
+
+
+  .app-logo {
+    width: 22px;
+    height: 22px;
+
+    font-size: 11px;
+  }
+
+
+  .piece-title {
+    font-size: 10px;
+  }
+
+
+  .range-display {
+    font-size: 8px;
+  }
+
+
+  .control-row {
+    padding: 4px 8px;
+
+    gap: 5px;
+  }
+
+
+  .control-card {
+    height: 38px;
+  }
+
+
+  .control-info small {
+    font-size: 6px;
+  }
+
+
+  .control-info strong {
+    font-size: 9px;
+  }
+
+
+  .control-icon {
+    width: 22px;
+    height: 22px;
+
+    font-size: 11px;
+  }
+
+
+  .piano-top-line {
+    height: 15px;
+
+    font-size: 7px;
+  }
+
+
+  .piano-area {
+    padding:
+      2px
+      7px
+      3px;
+  }
+
+
+  .piano-stage {
+    padding: 4px;
+  }
+
+
+  .white-key {
+    padding-bottom: 5px;
+  }
+
+
+  .white-key::after {
+    font-size: 8px;
+  }
+
+
+  .white-key.is-c::after {
+    font-size: 10px;
+  }
+
+
+  .black-key::after {
+    font-size: 6px;
+  }
+
+
+  .playback-bar {
+    min-height: 43px;
+
+    padding: 3px 8px;
+  }
+
+
+  .replay-button {
+    height: 29px;
+
+    font-size: 8px;
+  }
+
+
+  .play-button {
+    width: 31px;
+    height: 31px;
+
+    font-size: 14px;
+  }
+
+
+  .playback-label strong {
+    font-size: 8px;
+  }
+
+
+  .playback-label span,
+  .sample-status {
+    display: none;
+  }
+
+}
+
+
+/* =========================================
+   PORTRAIT NOTICE
+========================================= */
+
+@media (orientation: portrait) {
+
+  .piano-app {
+    display: none;
+  }
+
+
+  .portrait-screen {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 9999;
+
+    display: grid;
+
+    place-items: center;
+
+    padding: 25px;
+
+    background: #0b0d11;
+  }
+
+
+  .portrait-card {
+    width: min(330px, 100%);
+
+    padding: 30px 24px;
+
+    text-align: center;
+
+    border-radius: 22px;
+
+    background: #171a20;
+
+    border: 1px solid #2a2f38;
+  }
+
+
+  .portrait-icon {
+    width: 58px;
+    height: 58px;
+
+    margin: 0 auto 18px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 17px;
+
+    background: #242832;
+
+    color: #aaa2ff;
+
+    font-size: 25px;
+  }
+
+
+  .portrait-card h2 {
+    margin: 0 0 8px;
+
+    font-family: "Bricolage Grotesque", sans-serif;
+
+    font-size: 23px;
+  }
+
+
+  .portrait-card p {
+    margin: 0;
+
+    color: #9ca3af;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+  }
+
+}
+
+/* Piano Easy responsive polish layer */
+:root{--app-bg:#f7f7fc;--panel:#fff;--panel-2:#f5f4fb;--panel-border:#e7e5f2;--text:#282544;--muted:#85819c;--accent:#7667ef}
+html,body{height:auto;min-height:100%;overflow:auto;background:#f7f7fc;color:#282544}
+.piano-app{position:relative;inset:auto;width:100%;height:auto;min-height:100dvh;overflow:visible;background:radial-gradient(circle at 50% -30%,rgba(109,93,252,.10),transparent 45%),#f7f7fc;grid-template-rows:auto auto minmax(240px,1fr) auto}
+.app-header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);color:#282544;border-bottom:1px solid #e9e7f3;backdrop-filter:blur(12px)}
+.app-name{color:#282544}.app-logo{background:#eeeaff;color:#7667ef}.piece-title{color:#6c6885}.range-display{color:#6c6885;background:#faf9ff;border-color:#e8e6f2}
+.control-card{background:#fff;border-color:#e9e7f3;box-shadow:0 6px 18px rgba(48,42,104,.04);color:#282544}.control-info small{color:#9591aa}.control-info strong{color:#282544}.control-icon{color:#7667ef}.control-arrow{color:#9995b1}
+.piano-area{background:#fff;border:1px solid #e9e7f3;border-radius:18px;margin:0 14px;box-shadow:0 10px 30px rgba(48,42,104,.05);overflow:hidden}.piano-top-line{color:#6f6b87}.piano-stage{background:#faf9ff}.piano{touch-action:pan-x;min-width:660px}.playback-bar{position:sticky;bottom:0;z-index:15;background:rgba(255,255,255,.97);border-top:1px solid #e9e7f3;color:#282544;backdrop-filter:blur(12px)}.playback-label strong{color:#282544}.playback-label span,.sample-status{color:#85819c}.replay-button{color:#6f6b87;border-color:#e9e7f3;background:#fff}.sample-status{background:#f6f5fc;border-color:#e9e7f3}.portrait-screen{display:none!important}.piano-app{display:grid!important}
+@media(max-width:720px){.app-header{padding:8px 12px;min-height:58px}.app-name{font-size:14px}.piece-title{font-size:11px;max-width:120px}.range-display{display:none}.control-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:10px}.control-card{min-height:60px;padding:9px}.control-info strong{font-size:11px}.control-info small{font-size:9px}.control-icon{font-size:16px}.piano-area{margin:0 9px}.piano-top-line{padding:9px 12px}.piano-stage{padding:10px}.playback-bar{padding:8px 12px}.sample-status{display:none}.playback-substatus{font-size:10px}.playback-center{gap:9px}.play-button{width:46px;height:46px}.replay-button{padding:9px}.replay-button span{display:none}.pe-voice-btn{font-size:10px}}
+@media(min-width:721px){.piano-app{max-width:1500px;margin:0 auto}.piano-area{margin:0 18px}.control-row{padding:14px 18px;gap:12px}.piano-stage{padding:18px}}
