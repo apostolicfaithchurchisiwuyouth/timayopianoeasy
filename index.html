@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  >
+
+
+  <link rel="manifest" href="./manifest.json">
+
+<meta name="theme-color" content="#0b0d11">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Timayo Piano Lab">
+
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+  
+  <title>Piano Lab</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- =========================================
+       MOBILE LANDSCAPE PIANO APP
+  ========================================== -->
+
+  <section class="piano-app">
+
+    <!-- TOP -->
+    <header class="app-header">
+
+      <div class="app-title-area">
+
+        <div class="app-name">
+          <span class="app-logo">
+            <i class="ri-piano-line"></i>
+          </span>
+
+          <span>Piano Lab</span>
+        </div>
+
+        <div class="piece-title" id="pieceTitle">
+          Gentle Beginning
+        </div>
+
+      </div>
+
+      <div class="range-display">
+        C2 — C5
+      </div>
+
+    </header>
+
+
+    <!-- CONTROLS -->
+    <section class="control-row">
+
+      <!-- PIECE -->
+      <label class="control-card">
+
+        <span class="control-icon">
+          <i class="ri-music-2-line"></i>
+        </span>
+
+        <span class="control-info">
+          <small>PIECE</small>
+          <strong id="pieceControlText">
+            Gentle Beginning
+          </strong>
+        </span>
+
+        <i class="ri-arrow-down-s-line control-arrow"></i>
+
+        <select id="pieceSelect" aria-label="Choose piece">
+          <option value="gentle">Gentle Beginning</option>
+          <option value="allofme">All of Me</option>
+        </select>
+
+      </label>
+
+
+      <!-- HANDS -->
+      <label class="control-card">
+
+        <span class="control-icon">
+          <i class="ri-hand-heart-line"></i>
+        </span>
+
+        <span class="control-info">
+          <small>HANDS</small>
+          <strong id="handControlText">
+            Both Hands
+          </strong>
+        </span>
+
+        <i class="ri-arrow-down-s-line control-arrow"></i>
+
+        <select id="handSelect" aria-label="Choose hands">
+          <option value="both">Both Hands</option>
+          <option value="right">Right Hand</option>
+          <option value="left">Left Hand</option>
+        </select>
+
+      </label>
+
+
+      <!-- SPEED -->
+      <label class="control-card">
+
+        <span class="control-icon">
+          <i class="ri-speed-line"></i>
+        </span>
+
+        <span class="control-info">
+          <small>SPEED</small>
+          <strong id="speedControlText">
+            1× Normal
+          </strong>
+        </span>
+
+        <i class="ri-arrow-down-s-line control-arrow"></i>
+
+        <select id="speedSelect" aria-label="Choose speed">
+          <option value="0.5">0.5× Slow</option>
+          <option value="0.75">0.75×</option>
+          <option value="1" selected>1× Normal</option>
+          <option value="1.25">1.25×</option>
+          <option value="1.5">1.5× Fast</option>
+        </select>
+
+      </label>
+
+    </section>
+
+
+    <!-- PIANO -->
+    <main class="piano-area">
+
+      <div class="piano-top-line">
+
+        <span id="pianoStatus">
+          Ready
+        </span>
+
+        <span id="pianoMode">
+          Both Hands
+        </span>
+
+      </div>
+
+      <div class="piano-stage">
+
+        <div
+          class="piano"
+          id="piano"
+        ></div>
+
+      </div>
+
+    </main>
+
+
+    <!-- PLAYBACK -->
+    <footer class="playback-bar">
+
+      <button
+        class="replay-button"
+        id="replayButton"
+        type="button"
+      >
+        <i class="ri-replay-line"></i>
+        <span>Replay</span>
+      </button>
+
+
+      <div class="playback-center">
+
+        <button
+          class="play-button"
+          id="playButton"
+          type="button"
+          aria-label="Play"
+        >
+          <i
+            class="ri-play-fill"
+            id="playIcon"
+          ></i>
+        </button>
+
+        <div class="playback-label">
+
+          <strong id="playbackStatus">
+            Ready
+          </strong>
+
+          <span id="playbackSubstatus">
+            Press play to begin
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="playback-right">
+
+        <span class="sample-status">
+          <i class="ri-volume-up-line"></i>
+          Piano Sound
+        </span>
+
+      </div>
+
+    </footer>
+
+  </section>
+
+
+  <!-- =========================================
+       PORTRAIT NOTICE
+  ========================================== -->
+
+  <section class="portrait-screen">
+
+    <div class="portrait-card">
+
+      <div class="portrait-icon">
+        <i class="ri-smartphone-line"></i>
+      </div>
+
+      <h2>Turn your phone sideways</h2>
+
+      <p>
+        Piano Lab is designed for landscape mode.
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- TONE.JS -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/tone/15.1.22/Tone.js">
+  </script>
+
+  <script src="script.js"></script>
+  <script src="enhancements.js"></script>
+
+</body>
+</html>
